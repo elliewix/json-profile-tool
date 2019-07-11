@@ -5,7 +5,7 @@ import os.path
 import os
 import pathlib
 
-def main_processing(infile, outbase):
+def main_processing(infile, outbase, unique = False, numeric = False):
     rs = unpack_records(infile)
     outfolder = outbase + '/'
     i = 0
