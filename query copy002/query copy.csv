@@ -1,0 +1,9 @@
+field,num_unique_values,all_unique_Q,percent_is_numeric
+horse,9773,False,0.0
+horseLabel,9582,False,0.0
+mother,1548,False,0.0
+father,1852,False,0.0
+birthyear,319,False,0.9968652037617555
+genderLabel,4,False,0.0
+deathyear,152,False,0.993421052631579
+testfoo,1,True,0.0

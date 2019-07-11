@@ -10,7 +10,8 @@ def main_processing(infile, outbase, unique = False, numeric = False):
     plus flags about if you want certain calculations.
     This will create a new folder with natural numbers added to prevent overwriting.
     unique = calculates if all the values seen in this field are unique
-    numeric = calculates the percent of the values seen in this field pass .isnumeric()"""
+    numeric = calculates the percent of the values seen in this field pass .isnumeric()
+    Returns the results folder path."""
 
     rs = unpack_records(infile, unique, numeric)
     outfolder = PurePath(outbase)
@@ -96,15 +97,14 @@ def process_record(record):
                 added_already = False # sentinel to prevent dupes
                 if key not in profile: # adds base case for unseen fields
                     profile[key] = {'count': 1, 'values': []}
-
                     added_already = True
 
                     if isinstance(value, dict): # adds this if the field is seen as a container
                         profile[key]['values'].append('USEDASCONTAINER')
 
                 if not isinstance(value, dict): # add seen value of field if value not a dict
-                    if not added_already:
-                        profile[key]['count'] += 1
+                    # if not added_already:
+                    #     profile[key]['count'] += 1
                     profile[key]['values'].append(value)
                 else:
                     # recursively do this for each level of the tree
@@ -151,6 +151,9 @@ def integrate_summaries(summaries, unique, numeric):
 
 
 def percent_numeric(full):
+    """Pass a dict of the full profile data.
+    Mutates the profile dict to have the percent_is_numeric value.
+    This runs .isnumeric() on string versions of all values, and calculates the percentage that are True"""
     for key, value in full.items():
         numericsQ = [str(str(v).isnumeric()) for v in value['values'].keys()].count('True') / len(value['values'].values())
         print(numericsQ)
@@ -158,15 +161,20 @@ def percent_numeric(full):
 
 
 def determine_uniques(full):
+    """Pass a dict of the full profile data.
+    Mutates the profile dict to have the all_unique_Q value.
+    This calculates if all values seens for a field appear one and only one time, and thus it is a
+    unique field."""
     for key, value in full.items():
         counts = set(value['values'].keys())
-        if len(counts) == 1 and counts[0] == 1:
+        if len(counts) == 1:
             full[key]['all_unique_Q'] = True
         else:
             full[key]['all_unique_Q'] = False
 
 
 def count_values(full):
+    # Pass it a dict of the full profile data. Counts the number of times each unique value seen for that field appears.
     for key, value in full.items():
         full[key]['values'] = Counter(full[key]['values'])
 
