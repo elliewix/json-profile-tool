@@ -3,21 +3,28 @@ from collections import Counter
 import csv
 import os.path
 import os
-import pathlib
+from pathlib import PurePath
 
 def main_processing(infile, outbase, unique = False, numeric = False):
+    """Main function to start the analysis program. Pass it a filepath, and a path stem,
+    plus flags about if you want certain calculations.
+    This will create a new folder with natural numbers added to prevent overwriting.
+    unique = calculates if all the values seen in this field are unique
+    numeric = calculates the percent of the values seen in this field pass .isnumeric()"""
+
     rs = unpack_records(infile, unique, numeric)
-    outfolder = outbase + '/'
+    outfolder = PurePath(outbase)
+
     i = 0
     while True:
         if not os.path.isdir(outfolder):
             os.mkdir(outfolder)
             break
         else:
-            outfolder = outbase + str(i).zfill(3) + '/'
+            outfolder = PurePath(outbase + str(i).zfill(3))
             i += 1
-    write_result_json(rs, outfolder + outbase + '.json')
-    write_result_csv(rs, outfolder + outbase + '.csv')
+    write_result_json(rs, PurePath(outfolder, outbase + '.json'))
+    write_result_csv(rs, PurePath(outfolder, outbase + '.csv'))
 
 def unpack_records(infile, unique, numeric):
     alldata = []
