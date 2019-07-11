@@ -1,11 +1,23 @@
 import json
 from collections import Counter
+import csv
+import os.path
+import os
+import pathlib
 
-def main_processing(infile, outfile):
+def main_processing(infile, outbase):
     rs = unpack_records(infile)
-    smooshed = integrate_summaries(rs)
-    print(smooshed)
-    # write_result(allresult, outfile )
+    outfolder = outbase + '/'
+    i = 0
+    while True:
+        if not os.path.isdir(outfolder):
+            os.mkdir(outfolder)
+            break
+        else:
+            outfolder = outbase + str(i).zfill(3) + '/'
+            i += 1
+    write_result_json(rs, outfolder + outbase + '.json')
+    write_result_csv(rs, outfolder + outbase + '.csv')
 
 def unpack_records(infile):
     alldata = []
@@ -17,9 +29,37 @@ def unpack_records(infile):
 
     return integrate_summaries(alldata)
 
-def write_result(alldata, filename):
+def write_result_json(alldata, filename):
     with open(filename, 'w') as outfile:
-        json.dump(outfile, alldata, indent = 4)
+        json.dump(alldata, outfile, indent = 4)
+
+def write_result_csv(alldata, filename):
+
+    rows = []
+    headers = ['field','num_unique_values' ]
+
+    for key, value in alldata.items():
+        row = []
+        row.append(key) # add the field
+        row.append(len(set(value['values'].keys()))) # add the number of unique values
+
+        if 'all_unique_Q' in value: # add uniqueQ if present
+            row.append(value['all_unique_Q'])
+            if not 'all_unique_Q' in headers:
+                headers.append('all_unique_Q')
+
+        if 'percent_is_numeric' in value: # add the percent numeric if present
+            row.append(value['percent_is_numeric'])
+            if not 'percent_is_numeric' in headers:
+                headers.append('percent_is_numeric')
+        rows.append(row)
+
+    with open(filename, 'w') as csvout:
+        out = csv.writer(csvout)
+        out.writerow(headers)
+        out.writerows(rows)
+
+
 
 def process_record(record):
     """Recieves a list of records in json and profiles them. Presumes a similar schema."""
@@ -79,14 +119,15 @@ def integrate_summaries(summaries):
 
 def percent_numeric(full):
     for key, value in full.items():
-        numericsQ = [str(str(v).isnumeric()) for v in value['values'].values()].count('True') / len(value['values'])
+        numericsQ = [str(str(v).isnumeric()) for v in value['values'].keys()].count('True') / len(value['values'].values())
+        print(numericsQ)
         full[key]['percent_is_numeric'] = numericsQ
 
 
 def determine_uniques(full):
     for key, value in full.items():
-        counts = set(value['values'].values())
-        if counts == {1}:
+        counts = set(value['values'].keys())
+        if len(counts) == 1 and counts[0] == 1:
             full[key]['all_unique_Q'] = True
         else:
             full[key]['all_unique_Q'] = False

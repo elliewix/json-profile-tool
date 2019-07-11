@@ -13,7 +13,7 @@ def get_input_file(root):
     infile = root.filename
     label = tk.Label(root, text=f"You entered: " + infile + "\nLoading file and writing results")
     label.pack()
-    jpt.main_processing(infile, 'testout.json')
+    jpt.main_processing(infile, 'testout')
 
     return root.filename
 
@@ -33,12 +33,24 @@ north_lbl.pack()
 roll_btn = tk.Button(main_window, text="Select a file", command=lambda: get_input_file(main_window))
 roll_btn.pack()
 
+uniqueness_var = tk.BooleanVar()
+percent_numeric_var = tk.BooleanVar()
 
+uniqueness_cb = tk.Checkbutton(main_window, text="Pepperoni", variable=uniqueness_var, onvalue="Pepperoni", offvalue="None")
+percent_numeric_cb = tk.Checkbutton(main_window, text="Sausage", variable=percent_numeric_var, onvalue="Sausage", offvalue="None")
 
-print(roll_btn)
+# When any of the checkbuttons get turned on or off, the corresponding string variable objects
+# will be set to the respective state value (onvalue and offvalue).
+label1 = tk.Label(main_window, text="Compute uniqueness")
+label2 = tk.Label(main_window, text="Compute percent numeric")
 
+# label1.grid(row=0, column=1)
+# label2.grid(row=1, column=1)
 
+unique_chbtn = tk.Checkbutton(main_window, variable=uniqueness_var)
+pernumeric_chbtn = tk.Checkbutton(main_window, variable=percent_numeric_var)
 
+print("unique", uniqueness_var, 'percent', percent_numeric_var)
 
 #Start our window
 main_window.mainloop()
