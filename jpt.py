@@ -2,13 +2,17 @@ import tkinter as tk
 import json_profile_tools as jpt
 from tkinter import filedialog
 import os
+from pathlib import PurePath
 
 def submit(strvar, unique_cb, numeric_cb):
     popup_window = tk.Tk()
     tk.Label(popup_window, text=f"File analyzed: {strvar}").pack()
     tk.Label(popup_window, text=str(unique_cb) + str(numeric_cb) + "hello").pack()
     tk.Label(popup_window, text = "Results written to folder." )
-    jpt.main_processing(strvar, strvar.split('/')[-1].split('.')[0])
+
+    path = PurePath(strvar)
+    jpt.main_processing(str(path), path.stem)
+
     popup_window.mainloop()
 
 def browsefunc():
