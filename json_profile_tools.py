@@ -4,8 +4,9 @@ import csv
 import os.path
 import os
 from pathlib import PurePath
+import pandas as pd
 
-def main_processing(infile, outbase, unique = False, numeric = False):
+def main_processing(infile, outbase, unique = False, numeric = False, html = False):
     """Main function to start the analysis program. Pass it a filepath, and a path stem,
     plus flags about if you want certain calculations.
     This will create a new folder with natural numbers added to prevent overwriting.
@@ -30,6 +31,9 @@ def main_processing(infile, outbase, unique = False, numeric = False):
     # write out summary files
     write_result_json(rs, PurePath(outfolder, outbase + '.json'))
     write_result_csv(rs, PurePath(outfolder, outbase + '.csv'))
+
+    if html:
+        write_html_profile(rs, PurePath(outfolder, outbase + '.html'))
 
     return PurePath(outfolder)
 
@@ -178,4 +182,8 @@ def count_values(full):
     for key, value in full.items():
         full[key]['values'] = Counter(full[key]['values'])
 
+def write_html_profile(full, filename):
+    df = pd.read_json(json.dumps(full))
+    df.to_html(filename)
+    print('html written')
 
