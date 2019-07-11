@@ -20,7 +20,6 @@ def browsefunc():
     pathlabel.config(text=filename)
     analyse.append(filename)
 
-
 main_window = tk.Tk()
 
 analyse = [] # super hack to create a persistance that I can use later
@@ -52,8 +51,8 @@ unique_entry.grid(row=2, column=1)
 bln_chbtn.grid(row=3, column=1)
 pathlabel.grid(row = 0, column = 0)
 
-submit_btn = tk.Button(main_window, text="Click submit to execute the analysis.", command=lambda: submit(analyse[0], \
-                                                                                                         unique_var.get(), numeric_var.get()))
+submit_btn = tk.Button(main_window, text="Click submit to execute the analysis.",
+                       command=lambda: submit(analyse[0], unique_var.get(), numeric_var.get()))
 submit_btn.grid(row=4, column=1)
 
 main_window.mainloop()
