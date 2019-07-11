@@ -6,7 +6,7 @@ import os
 import pathlib
 
 def main_processing(infile, outbase, unique = False, numeric = False):
-    rs = unpack_records(infile)
+    rs = unpack_records(infile, unique, numeric)
     outfolder = outbase + '/'
     i = 0
     while True:
@@ -19,7 +19,7 @@ def main_processing(infile, outbase, unique = False, numeric = False):
     write_result_json(rs, outfolder + outbase + '.json')
     write_result_csv(rs, outfolder + outbase + '.csv')
 
-def unpack_records(infile):
+def unpack_records(infile, unique, numeric):
     alldata = []
     with open(infile, 'r') as jsonin:
         data = json.load(jsonin)
@@ -27,7 +27,7 @@ def unpack_records(infile):
     for r in data:
         alldata.append(process_record(r))
 
-    return integrate_summaries(alldata)
+    return integrate_summaries(alldata, unique, numeric)
 
 def write_result_json(alldata, filename):
     with open(filename, 'w') as outfile:
@@ -90,7 +90,7 @@ def process_record(record):
     return traverse_record(record, profile)
 
 
-def integrate_summaries(summaries):
+def integrate_summaries(summaries, unique, numeric):
     """pass this a list of dicts with the summaries, and it'll integrate them into
     a single dictionary that aggregates all the values.
     Will currently only aggregate counts counted values."""
@@ -109,10 +109,12 @@ def integrate_summaries(summaries):
 
     # add all unique value to the summary
 
-    determine_uniques(full)
+    if unique:
+        determine_uniques(full)
 
     # add numeric checks
-    percent_numeric(full)
+    if numeric:
+        percent_numeric(full)
 
     return full
 
