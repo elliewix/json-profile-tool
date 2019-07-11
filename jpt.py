@@ -7,17 +7,18 @@ from pathlib import PurePath
 def submit(strvar, unique_cb, numeric_cb):
     popup_window = tk.Tk()
     tk.Label(popup_window, text=f"File analyzed: {strvar}").pack()
+
+    resultsfolder = jpt.main_processing(meta['pathobj'], meta['stem'], unique = unique_cb, numeric = numeric_cb)
+    meta['results'] = resultsfolder
+
     tk.Label(popup_window, text=f"Results saved to: {meta['results']}").pack()
     tk.Label(popup_window, text=f"Uniqueness calculation: {'ON' if unique_cb else 'OFF'}").pack()
     tk.Label(popup_window, text=f"Percent numeric calculation: {'ON' if numeric_cb else 'OFF'}").pack()
-
-    jpt.main_processing(meta['pathobj'], meta['stem'], unique = unique_cb, numeric = numeric_cb)
 
     popup_window.mainloop()
 
 def browsefunc():
     filename = filedialog.askopenfilename()
-    print(filename)
     path = PurePath(filename)
     pathlabel.config(text=filename)
     meta['pathobj'] = path

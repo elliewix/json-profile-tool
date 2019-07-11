@@ -15,6 +15,9 @@ def main_processing(infile, outbase, unique = False, numeric = False):
     rs = unpack_records(infile, unique, numeric)
     outfolder = PurePath(outbase)
 
+    # chunk where the uniquness of the potential folder name is checked,
+    # and a natural number added to the folder name until a unique name is found
+    # will look nice until after 999 and increase the zfill if you need more.
     i = 0
     while True:
         if not os.path.isdir(outfolder):
@@ -23,10 +26,17 @@ def main_processing(infile, outbase, unique = False, numeric = False):
         else:
             outfolder = PurePath(outbase + str(i).zfill(3))
             i += 1
+    # write out summary files
     write_result_json(rs, PurePath(outfolder, outbase + '.json'))
     write_result_csv(rs, PurePath(outfolder, outbase + '.csv'))
 
+    return PurePath(outfolder)
+
 def unpack_records(infile, unique, numeric):
+    """Pass in a file path, then unique and numeric flags.
+    Returns a dictionary of the fully analyzed records from this file.
+    Parses the json file, sends each record throuh process_record,
+    Sends the collective records to integrate_summaries"""
     alldata = []
     with open(infile, 'r') as jsonin:
         data = json.load(jsonin)
@@ -37,11 +47,14 @@ def unpack_records(infile, unique, numeric):
     return integrate_summaries(alldata, unique, numeric)
 
 def write_result_json(alldata, filename):
+    """Pass a dictionary of an analyzed file and a file name.
+    Writes that dictionary out as a json file with indent of 4 spaces."""
     with open(filename, 'w') as outfile:
         json.dump(alldata, outfile, indent = 4)
 
 def write_result_csv(alldata, filename):
-
+    """Pass dictionary of an analyzed file and a file name.
+    Selects some data from that dict and writes it out as a CSV file."""
     rows = []
     headers = ['field','num_unique_values' ]
 
@@ -69,24 +82,33 @@ def write_result_csv(alldata, filename):
 
 
 def process_record(record):
-    """Recieves a list of records in json and profiles them. Presumes a similar schema."""
+    """Recieves a list of records in json and profiles them. Presumes a similar schema.
+    Will recursively traverse the object tree, flattening out the structure during profiling.
+    Returns a dictionary of a complete profile."""
+
+
     def traverse_record(record, profile):
-            """recieves one record as dict and profiles it"""
+            """Pass a single data record and the base profile object.
+            Calculates profile information about each field and adds it to the profile.
+            Will recursively call itself if another dict is found as as value."""
+
             for key, value in record.items():
-                added_already = False
-                if key not in profile:
+                added_already = False # sentinel to prevent dupes
+                if key not in profile: # adds base case for unseen fields
                     profile[key] = {'count': 1, 'values': []}
+
                     added_already = True
-                    if isinstance(value, dict):
+
+                    if isinstance(value, dict): # adds this if the field is seen as a container
                         profile[key]['values'].append('USEDASCONTAINER')
-                if not isinstance(value, dict):
+
+                if not isinstance(value, dict): # add seen value of field if value not a dict
                     if not added_already:
                         profile[key]['count'] += 1
                     profile[key]['values'].append(value)
                 else:
                     # recursively do this for each level of the tree
                     profile = traverse_record(value, profile)
-            # print(profile)
             return profile
 
     # establishing base cases
@@ -101,7 +123,9 @@ def integrate_summaries(summaries, unique, numeric):
     """pass this a list of dicts with the summaries, and it'll integrate them into
     a single dictionary that aggregates all the values.
     Will currently only aggregate counts counted values."""
+
     full = {}
+
     for d in summaries:
         for key, value in d.items():
             if key not in full:
