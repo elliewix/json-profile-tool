@@ -103,20 +103,21 @@ def process_record(record):
             """Pass a single data record and the base profile object.
             Calculates profile information about each field and adds it to the profile.
             Will recursively call itself if another dict is found as as value."""
-            
+
             for key, value in record.items():
                 added_already = False # sentinel to prevent dupes
                 if key not in profile: # adds base case for unseen fields
                     profile[key] = {'count': 1, 'values': []}
                     added_already = True
 
-                    if isinstance(value, dict): # adds this if the field is seen as a container
+                    if isinstance(value, dict) or isinstance(value, list): # adds this if the field is seen as a container
                         profile[key]['values'].append('USEDASCONTAINER')
 
-                if not isinstance(value, dict): # add seen value of field if value not a dict
-                    # if not added_already:
-                    #     profile[key]['count'] += 1
+                if not isinstance(value, dict) and not isinstance(value, list): # add seen value of field if value not a dict
                     profile[key]['values'].append(value)
+                elif isinstance(value, list):
+                    for r in value:
+                        profile = traverse_record(r, profile)
                 else:
                     # recursively do this for each level of the tree
                     profile = traverse_record(value, profile)
@@ -127,6 +128,7 @@ def process_record(record):
     for key, value in record.items():
         if isinstance(value, dict):
             profile[key]['values'].append('USEDASCONTAINER')
+
     return traverse_record(record, profile)
 
 
