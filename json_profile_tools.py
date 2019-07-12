@@ -6,7 +6,7 @@ import os
 from pathlib import PurePath
 import pandas as pd
 
-def main_processing(infile, outbase, unique = False, numeric = False, html = False):
+def main_processing(infile, outbase, unique = False, numeric = False, html = False, excel = False):
     """Main function to start the analysis program. Pass it a filepath, and a path stem,
     plus flags about if you want certain calculations.
     This will create a new folder with natural numbers added to prevent overwriting.
@@ -15,6 +15,7 @@ def main_processing(infile, outbase, unique = False, numeric = False, html = Fal
     Returns the results folder path."""
 
     rs = unpack_records(infile, unique, numeric)
+
     outfolder = PurePath(outbase)
 
     # chunk where the uniquness of the potential folder name is checked,
@@ -35,6 +36,9 @@ def main_processing(infile, outbase, unique = False, numeric = False, html = Fal
     if html:
         write_html_profile(rs, PurePath(outfolder, outbase + '.html'))
 
+    if excel:
+        write_excel_values(rs, PurePath(outfolder, outbase + '.xlsx'))
+
     return PurePath(outfolder)
 
 def unpack_records(infile, unique, numeric):
@@ -45,6 +49,9 @@ def unpack_records(infile, unique, numeric):
     alldata = []
     with open(infile, 'r') as jsonin:
         data = json.load(jsonin)
+
+    if isinstance(data, dict): # attempt to force this into a records like structure
+        data = [data]
 
     for r in data:
         alldata.append(process_record(r))
@@ -96,7 +103,7 @@ def process_record(record):
             """Pass a single data record and the base profile object.
             Calculates profile information about each field and adds it to the profile.
             Will recursively call itself if another dict is found as as value."""
-
+            
             for key, value in record.items():
                 added_already = False # sentinel to prevent dupes
                 if key not in profile: # adds base case for unseen fields
@@ -138,11 +145,7 @@ def integrate_summaries(summaries, unique, numeric):
                 full[key]['count'] += value['count']
                 full[key]['values'] += value['values'] # concat b/c needing to flatten it
 
-    # summarize the values areas
-
     count_values(full)
-
-    # add all unique value to the summary
 
     if unique:
         determine_uniques(full)
@@ -154,13 +157,14 @@ def integrate_summaries(summaries, unique, numeric):
     return full
 
 
+
+
 def percent_numeric(full):
     """Pass a dict of the full profile data.
     Mutates the profile dict to have the percent_is_numeric value.
     This runs .isnumeric() on string versions of all values, and calculates the percentage that are True"""
     for key, value in full.items():
         numericsQ = [str(str(v).isnumeric()) for v in value['values'].keys()].count('True') / len(value['values'].values())
-        print(numericsQ)
         full[key]['percent_is_numeric'] = numericsQ
 
 
@@ -183,7 +187,21 @@ def count_values(full):
         full[key]['values'] = Counter(full[key]['values'])
 
 def write_html_profile(full, filename):
+    """pass a dict of the full profile data and file name,
+     loads as a pandas data frame, and writes it to and HTML file"""
     df = pd.read_json(json.dumps(full))
+    df = df.T
     df.to_html(filename)
-    print('html written')
 
+def write_excel_values(full, filename):
+    """pass a dict of the full profile data and file name,
+    loads it as a data frame, loops over the values seen in the fields,
+    writes out the values and their counts as separate excel sheets."""
+    df = pd.read_json(json.dumps(full))
+    writer = pd.ExcelWriter(filename)
+
+    for name in df.columns:
+        minidf = pd.DataFrame([[k, v] for k,v in df[name]['values'].items()], columns = ['value', 'count'])
+        minidf.to_excel(writer, str(name), index = False)
+
+    writer.save()

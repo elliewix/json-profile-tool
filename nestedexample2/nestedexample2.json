@@ -1,0 +1,157 @@
+{
+    "widget": {
+        "count": 1,
+        "values": {
+            "USEDASCONTAINER": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "debug": {
+        "count": 1,
+        "values": {
+            "on": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "window": {
+        "count": 1,
+        "values": {
+            "USEDASCONTAINER": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "title": {
+        "count": 1,
+        "values": {
+            "Sample Konfabulator Widget": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "name": {
+        "count": 1,
+        "values": {
+            "main_window": 1,
+            "sun1": 1,
+            "text1": 1
+        },
+        "all_unique_Q": false,
+        "percent_is_numeric": 0.0
+    },
+    "width": {
+        "count": 1,
+        "values": {
+            "500": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 1.0
+    },
+    "height": {
+        "count": 1,
+        "values": {
+            "500": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 1.0
+    },
+    "image": {
+        "count": 1,
+        "values": {
+            "USEDASCONTAINER": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "src": {
+        "count": 1,
+        "values": {
+            "Images/Sun.png": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "hOffset": {
+        "count": 1,
+        "values": {
+            "250": 2
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 1.0
+    },
+    "vOffset": {
+        "count": 1,
+        "values": {
+            "250": 1,
+            "100": 1
+        },
+        "all_unique_Q": false,
+        "percent_is_numeric": 1.0
+    },
+    "alignment": {
+        "count": 1,
+        "values": {
+            "center": 2
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "text": {
+        "count": 1,
+        "values": {
+            "USEDASCONTAINER": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "test": {
+        "count": 1,
+        "values": {
+            "USEDASCONTAINER": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "foo": {
+        "count": 1,
+        "values": {
+            "1": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 1.0
+    },
+    "data": {
+        "count": 1,
+        "values": {
+            "Click Here": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "size": {
+        "count": 1,
+        "values": {
+            "36": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 1.0
+    },
+    "style": {
+        "count": 1,
+        "values": {
+            "bold": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    },
+    "onMouseUp": {
+        "count": 1,
+        "values": {
+            "sun1.opacity = (sun1.opacity / 100) * 90;": 1
+        },
+        "all_unique_Q": true,
+        "percent_is_numeric": 0.0
+    }
+}

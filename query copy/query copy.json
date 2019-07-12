@@ -1,6 +1,6 @@
 {
     "horse": {
-        "count": 19552,
+        "count": 9776,
         "values": {
             "http://www.wikidata.org/entity/Q1001792": 1,
             "http://www.wikidata.org/entity/Q1005232": 1,
@@ -9780,7 +9780,7 @@
         "percent_is_numeric": 0.0
     },
     "horseLabel": {
-        "count": 19552,
+        "count": 9776,
         "values": {
             "Makybe Diva": 1,
             "Rock of Gibraltar": 1,
@@ -19369,7 +19369,7 @@
         "percent_is_numeric": 0.0
     },
     "mother": {
-        "count": 3810,
+        "count": 1905,
         "values": {
             "http://www.wikidata.org/entity/Q14949904": 2,
             "http://www.wikidata.org/entity/Q61987321": 1,
@@ -20924,7 +20924,7 @@
         "percent_is_numeric": 0.0
     },
     "father": {
-        "count": 12626,
+        "count": 6313,
         "values": {
             "http://www.wikidata.org/entity/Q5263956": 4,
             "http://www.wikidata.org/entity/Q1005468": 44,
@@ -22783,7 +22783,7 @@
         "percent_is_numeric": 0.0
     },
     "birthyear": {
-        "count": 17956,
+        "count": 8978,
         "values": {
             "1999": 150,
             "1986": 97,
@@ -23109,7 +23109,7 @@
         "percent_is_numeric": 0.9968652037617555
     },
     "genderLabel": {
-        "count": 15340,
+        "count": 7670,
         "values": {
             "female organism": 2913,
             "male organism": 4754,
@@ -23120,7 +23120,7 @@
         "percent_is_numeric": 0.0
     },
     "deathyear": {
-        "count": 2190,
+        "count": 1095,
         "values": {
             "2003": 15,
             "2014": 70,
@@ -23279,7 +23279,7 @@
         "percent_is_numeric": 0.993421052631579
     },
     "testfoo": {
-        "count": 2,
+        "count": 1,
         "values": {
             "should be unique": 1
         },
