@@ -47,7 +47,7 @@ def unpack_records(infile, unique, numeric):
     Parses the json file, sends each record throuh process_record,
     Sends the collective records to integrate_summaries"""
     alldata = []
-    with open(infile, 'r') as jsonin:
+    with open(infile, 'r', encoding='utf-8') as jsonin:
         data = json.load(jsonin)
 
     if isinstance(data, dict): # attempt to force this into a records like structure
@@ -61,7 +61,7 @@ def unpack_records(infile, unique, numeric):
 def write_result_json(alldata, filename):
     """Pass a dictionary of an analyzed file and a file name.
     Writes that dictionary out as a json file with indent of 4 spaces."""
-    with open(filename, 'w') as outfile:
+    with open(filename, 'w', encoding='utf-8') as outfile:
         json.dump(alldata, outfile, indent = 4)
 
 def write_result_csv(alldata, filename):
@@ -86,7 +86,7 @@ def write_result_csv(alldata, filename):
                 headers.append('percent_is_numeric')
         rows.append(row)
 
-    with open(filename, 'w') as csvout:
+    with open(filename, 'w', encoding='utf-8') as csvout:
         out = csv.writer(csvout)
         out.writerow(headers)
         out.writerows(rows)
@@ -157,9 +157,6 @@ def integrate_summaries(summaries, unique, numeric):
         percent_numeric(full)
 
     return full
-
-
-
 
 def percent_numeric(full):
     """Pass a dict of the full profile data.

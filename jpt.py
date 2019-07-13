@@ -27,7 +27,7 @@ def browsefunc():
     Gathers the file path from the browse dialog box, and loads the meta dict with info on the file"""
 
     # get the file info
-    filename = filedialog.askopenfilename()
+    filename = filedialog.askopenfilename(initialdir = os.getcwd(),title = "Select file",filetypes = (("json files","*.json"),("all files","*.*")))
     path = PurePath(filename)
     pathlabel.config(text=filename)
 
