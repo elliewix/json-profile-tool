@@ -19,7 +19,7 @@ def submit(strvar, unique_cb, numeric_cb, html_cb, excel_cb, customname_entry):
     tk.Label(popup_window, text=f"Percent numeric calculation: {'ON' if numeric_cb else 'OFF'}").pack()
     tk.Label(popup_window, text=f"Write HTML file: {'ON' if html_cb else 'OFF'}").pack()
     tk.Label(popup_window, text=f"Write Excel file: {'ON' if html_cb else 'OFF'}").pack()
-    tk.Label(popup_window, text= f"Custom name was: {customname_entry}").pack()
+    tk.Label(popup_window, text= f"Custom name was: {meta['results']}").pack()
     popup_window.mainloop()
 
 
