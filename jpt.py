@@ -10,7 +10,7 @@ def submit(strvar, unique_cb, numeric_cb, html_cb, excel_cb, customname_entry):
     tk.Label(popup_window, text=f"File analyzed: {strvar}").pack()
 
     # run the analysis now, doing this before to retrieve the results folder name for display
-    resultsfolder = jpt.main_processing(meta['pathobj'], meta['stem'], unique = unique_cb, numeric = numeric_cb, html = html_cb, excel = excel_cb)
+    resultsfolder = jpt.main_processing(meta['pathobj'], customname_entry, unique = unique_cb, numeric = numeric_cb, html = html_cb, excel = excel_cb)
     meta['results'] = resultsfolder
 
     # add the labels

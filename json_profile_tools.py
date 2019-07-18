@@ -13,7 +13,7 @@ def main_processing(infile, outbase, unique = False, numeric = False, html = Fal
     unique = calculates if all the values seen in this field are unique
     numeric = calculates the percent of the values seen in this field pass .isnumeric()
     Returns the results folder path."""
-
+    print(outbase)
     rs = unpack_records(infile, unique, numeric)
 
     outfolder = PurePath(outbase)
@@ -24,20 +24,24 @@ def main_processing(infile, outbase, unique = False, numeric = False, html = Fal
     i = 0
     while True:
         if not os.path.isdir(outfolder):
-            os.mkdir(outfolder)
+            os.mkdir(PurePath(outfolder))
             break
         else:
             outfolder = PurePath(outbase + str(i).zfill(3))
             i += 1
     # write out summary files
-    write_result_json(rs, PurePath(outfolder, outbase + '.json'))
-    write_result_csv(rs, PurePath(outfolder, outbase + '.csv'))
+
+    print(outfolder)
+    print()
+    print(PurePath(outfolder, PurePath(outfolder).stem + '.json'))
+    write_result_json(rs, PurePath(outfolder, PurePath(outfolder).stem + '.json'))
+    write_result_csv(rs, PurePath(outfolder, PurePath(outfolder).stem + '.csv'))
 
     if html:
-        write_html_profile(rs, PurePath(outfolder, outbase + '.html'))
+        write_html_profile(rs, PurePath(outfolder, PurePath(outfolder).stem + '.html'))
 
     if excel:
-        write_excel_values(rs, PurePath(outfolder, outbase + '.xlsx'))
+        write_excel_values(rs, PurePath(outfolder, PurePath(outfolder).stem + '.xlsx'))
 
     return PurePath(outfolder)
 
