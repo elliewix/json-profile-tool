@@ -192,7 +192,9 @@ def write_html_profile(full, filename):
      loads as a pandas data frame, and writes it to and HTML file"""
     df = pd.read_json(json.dumps(full))
     df = df.T
-    df.to_html(filename)
+    html = df.to_html()
+    with open(filename, 'w', encoding = 'utf-8') as out:
+        out.write(html)
 
 def write_excel_values(full, filename):
     """pass a dict of the full profile data and file name,
