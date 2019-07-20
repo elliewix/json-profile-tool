@@ -31,9 +31,7 @@ def main_processing(infile, outbase, unique = False, numeric = False, html = Fal
             i += 1
     # write out summary files
 
-    print(outfolder)
-    print()
-    print(PurePath(outfolder, PurePath(outfolder).stem + '.json'))
+
     write_result_json(rs, PurePath(outfolder, PurePath(outfolder).stem + '.json'))
     write_result_csv(rs, PurePath(outfolder, PurePath(outfolder).stem + '.csv'))
 
