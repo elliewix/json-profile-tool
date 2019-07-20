@@ -205,6 +205,6 @@ def write_excel_values(full, filename):
 
     for name in df.columns:
         minidf = pd.DataFrame([[k, v] for k,v in df[name]['values'].items()], columns = ['value', 'count'])
-        minidf.to_excel(writer, str(name), index = False)
+        minidf.to_excel(writer, str(name), index = False, encoding = 'utf-8')
 
     writer.save()
