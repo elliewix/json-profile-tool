@@ -1,9 +1,9 @@
-# uic-python
+# JSON profile tool
 
-* `jpt.py` main program with tkinkter application
+* `jpt.py` main program with tkinkter application (run this one for gui)
 * `json_profile_tools.py` general functions and tools for performing analysis
 
 TODO
 
 * more docs
-* add text box to tk app to ask for custom results name
+* tidy up with better directions
