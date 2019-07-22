@@ -47,6 +47,8 @@ def main_processing(infile, outbase, unique = False, numeric = False, html = Fal
 
     return PurePath(outfolder)
 
+
+# functions to drive the initial analylsis
 def unpack_records(infile, unique, numeric):
     """Pass in a file path, then unique and numeric flags, returns a dict of a analyzed records.
 
@@ -63,43 +65,6 @@ def unpack_records(infile, unique, numeric):
         alldata.append(process_record(r))
 
     return integrate_summaries(alldata, unique, numeric)
-
-def write_result_json(alldata, filename):
-    """Writes dictionary values out as json file.
-
-    Pass a dictionary of an analyzed file and a file name, will
-    Writes that dictionary out as a json file with indent of 4 spaces."""
-    with open(filename, 'w', encoding='utf-8') as outfile:
-        json.dump(alldata, outfile, indent = 4)
-
-def write_result_csv(alldata, filename):
-    """Formats and writes dict results as a CSV file.
-
-    Pass dictionary of an analyzed file and a file name.
-    Selects some data from that dict and writes it out as a CSV file."""
-    rows = []
-    headers = ['field','num_unique_values' ]
-
-    for key, value in alldata.items():
-        row = []
-        row.append(key) # add the field
-        row.append(len(set(value['values'].keys()))) # add the number of unique values
-
-        if 'all_unique_Q' in value: # add uniqueQ if present
-            row.append(value['all_unique_Q'])
-            if not 'all_unique_Q' in headers:
-                headers.append('all_unique_Q')
-
-        if 'percent_is_numeric' in value: # add the percent numeric if present
-            row.append(value['percent_is_numeric'])
-            if not 'percent_is_numeric' in headers:
-                headers.append('percent_is_numeric')
-        rows.append(row)
-
-    with open(filename, 'w', encoding='utf-8') as csvout:
-        out = csv.writer(csvout)
-        out.writerow(headers)
-        out.writerows(rows)
 
 def process_record(record):
     """Recieves a list of records in json and profiles them, returns the dict profile of data.
@@ -143,7 +108,6 @@ def process_record(record):
 
     return traverse_record(record, profile)
 
-
 def integrate_summaries(summaries, unique, numeric):
     """Processes a list of profile summaries and returns a synthesized dictionary of values.
 
@@ -172,6 +136,8 @@ def integrate_summaries(summaries, unique, numeric):
 
     return full
 
+
+# functions to calculate information about the profile
 def percent_numeric(full):
     """Calculates the percent of values within each field that are numeric, updates the profile data.
 
@@ -181,7 +147,6 @@ def percent_numeric(full):
     for key, value in full.items():
         numericsQ = [str(str(v).isnumeric()) for v in value['values'].keys()].count('True') / len(value['values'].values())
         full[key]['percent_is_numeric'] = numericsQ
-
 
 def determine_uniques(full):
     """Calculates the percent of unique values within the fields, updates the profile data.
@@ -197,7 +162,6 @@ def determine_uniques(full):
         else:
             full[key]['all_unique_Q'] = False
 
-
 def count_values(full):
     """Counts the number of unique values seen within that field, updates the profile data.
 
@@ -206,6 +170,45 @@ def count_values(full):
     """
     for key, value in full.items():
         full[key]['values'] = Counter(full[key]['values'])
+
+
+# functions to write values out
+def write_result_json(alldata, filename):
+    """Writes dictionary values out as json file.
+
+    Pass a dictionary of an analyzed file and a file name, will
+    Writes that dictionary out as a json file with indent of 4 spaces."""
+    with open(filename, 'w', encoding='utf-8') as outfile:
+        json.dump(alldata, outfile, indent = 4)
+
+def write_result_csv(alldata, filename):
+    """Formats and writes dict results as a CSV file.
+
+    Pass dictionary of an analyzed file and a file name.
+    Selects some data from that dict and writes it out as a CSV file."""
+    rows = []
+    headers = ['field','num_times_seen' ]
+
+    for key, value in alldata.items():
+        row = []
+        row.append(key) # add the field
+        row.append(len(set(value['values'].keys()))) # add the number of unique values
+
+        if 'all_unique_Q' in value: # add uniqueQ if present
+            row.append(value['all_unique_Q'])
+            if not 'all_unique_Q' in headers:
+                headers.append('all_unique_Q')
+
+        if 'percent_is_numeric' in value: # add the percent numeric if present
+            row.append(value['percent_is_numeric'])
+            if not 'percent_is_numeric' in headers:
+                headers.append('percent_is_numeric')
+        rows.append(row)
+
+    with open(filename, 'w', encoding='utf-8') as csvout:
+        out = csv.writer(csvout)
+        out.writerow(headers)
+        out.writerows(rows)
 
 def write_html_profile(full, filename):
     """Writes out the HTML version of the data profile.
