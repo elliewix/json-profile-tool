@@ -101,8 +101,6 @@ def write_result_csv(alldata, filename):
         out.writerow(headers)
         out.writerows(rows)
 
-
-
 def process_record(record):
     """Recieves a list of records in json and profiles them, returns the dict profile of data.
 

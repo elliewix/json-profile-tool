@@ -9775,9 +9775,7 @@
             "http://www.wikidata.org/entity/Q980617": 1,
             "http://www.wikidata.org/entity/Q26798": 1,
             "http://www.wikidata.org/entity/Q48857": 2
-        },
-        "all_unique_Q": false,
-        "percent_is_numeric": 0.0
+        }
     },
     "horseLabel": {
         "count": 9776,
@@ -19364,9 +19362,7 @@
             "Sakhee": 1,
             "Nijinsky II": 1,
             "Skowronek": 2
-        },
-        "all_unique_Q": false,
-        "percent_is_numeric": 0.0
+        }
     },
     "mother": {
         "count": 1905,
@@ -20919,9 +20915,7 @@
             "http://www.wikidata.org/entity/Q63970119": 1,
             "http://www.wikidata.org/entity/Q61994027": 1,
             "http://www.wikidata.org/entity/Q61970478": 1
-        },
-        "all_unique_Q": false,
-        "percent_is_numeric": 0.0
+        }
     },
     "father": {
         "count": 6313,
@@ -22778,9 +22772,7 @@
             "http://www.wikidata.org/entity/Q61997313": 1,
             "http://www.wikidata.org/entity/Q8072668": 1,
             "http://www.wikidata.org/entity/Q11328608": 1
-        },
-        "all_unique_Q": false,
-        "percent_is_numeric": 0.0
+        }
     },
     "birthyear": {
         "count": 8978,
@@ -23104,9 +23096,7 @@
             "1698": 1,
             "1687": 1,
             "1725": 1
-        },
-        "all_unique_Q": false,
-        "percent_is_numeric": 0.9968652037617555
+        }
     },
     "genderLabel": {
         "count": 7670,
@@ -23115,9 +23105,7 @@
             "male organism": 4754,
             "male": 2,
             "female": 1
-        },
-        "all_unique_Q": false,
-        "percent_is_numeric": 0.0
+        }
     },
     "deathyear": {
         "count": 1095,
@@ -23274,8 +23262,6 @@
             "1848": 1,
             "1874": 1,
             "1793": 1
-        },
-        "all_unique_Q": false,
-        "percent_is_numeric": 0.993421052631579
+        }
     }
 }
