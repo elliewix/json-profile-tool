@@ -7,13 +7,17 @@ from pathlib import PurePath
 import pandas as pd
 
 def main_processing(infile, outbase, unique = False, numeric = False, html = False, excel = False):
-    """Main function to start the analysis program. Pass it a filepath, and a path stem,
-    plus flags about if you want certain calculations.
+    """Main function to start the analysis program, returns a PurePath object of the results folder.
+
+    Pass a filepath, and a path stem, plus optional flags about if you want certain calculations.
     This will create a new folder with natural numbers added to prevent overwriting.
-    unique = calculates if all the values seen in this field are unique
-    numeric = calculates the percent of the values seen in this field pass .isnumeric()
-    Returns the results folder path."""
-    print(outbase)
+
+    Keyword arguments:
+    unique --  calculates if all the values seen in this field are unique
+    numeric --  calculates the percent of the values seen in this field pass .isnumeric()
+    html -- flag to create the html output
+    excel -- flag to create the excel file output
+    """
     rs = unpack_records(infile, unique, numeric)
 
     outfolder = PurePath(outbase)
@@ -44,8 +48,8 @@ def main_processing(infile, outbase, unique = False, numeric = False, html = Fal
     return PurePath(outfolder)
 
 def unpack_records(infile, unique, numeric):
-    """Pass in a file path, then unique and numeric flags.
-    Returns a dictionary of the fully analyzed records from this file.
+    """Pass in a file path, then unique and numeric flags, returns a dict of a analyzed records.
+
     Parses the json file, sends each record throuh process_record,
     Sends the collective records to integrate_summaries"""
     alldata = []
@@ -61,13 +65,17 @@ def unpack_records(infile, unique, numeric):
     return integrate_summaries(alldata, unique, numeric)
 
 def write_result_json(alldata, filename):
-    """Pass a dictionary of an analyzed file and a file name.
+    """Writes dictionary values out as json file.
+
+    Pass a dictionary of an analyzed file and a file name, will
     Writes that dictionary out as a json file with indent of 4 spaces."""
     with open(filename, 'w', encoding='utf-8') as outfile:
         json.dump(alldata, outfile, indent = 4)
 
 def write_result_csv(alldata, filename):
-    """Pass dictionary of an analyzed file and a file name.
+    """Formats and writes dict results as a CSV file.
+
+    Pass dictionary of an analyzed file and a file name.
     Selects some data from that dict and writes it out as a CSV file."""
     rows = []
     headers = ['field','num_unique_values' ]
@@ -96,13 +104,17 @@ def write_result_csv(alldata, filename):
 
 
 def process_record(record):
-    """Recieves a list of records in json and profiles them. Presumes a similar schema.
+    """Recieves a list of records in json and profiles them, returns the dict profile of data.
+
+    Presumes a similar schema across all records.
     Will recursively traverse the object tree, flattening out the structure during profiling.
     Returns a dictionary of a complete profile."""
 
 
     def traverse_record(record, profile):
-            """Pass a single data record and the base profile object.
+            """Processes a single record, to be used recursively, returning the updated profile object.
+
+            Pass a single data record and the current profile object.
             Calculates profile information about each field and adds it to the profile.
             Will recursively call itself if another dict is found as as value."""
 
@@ -135,7 +147,9 @@ def process_record(record):
 
 
 def integrate_summaries(summaries, unique, numeric):
-    """pass this a list of dicts with the summaries, and it'll integrate them into
+    """Processes a list of profile summaries and returns a synthesized dictionary of values.
+
+    pass this a list of dicts with the summaries, and calculation flags, and it'll integrate them into
     a single dictionary that aggregates all the values.
     Will currently only aggregate counts counted values."""
 
@@ -161,7 +175,9 @@ def integrate_summaries(summaries, unique, numeric):
     return full
 
 def percent_numeric(full):
-    """Pass a dict of the full profile data.
+    """Calculates the percent of values within each field that are numeric, updates the profile data.
+
+    Pass a dict of the full profile data.
     Mutates the profile dict to have the percent_is_numeric value.
     This runs .isnumeric() on string versions of all values, and calculates the percentage that are True"""
     for key, value in full.items():
@@ -170,7 +186,9 @@ def percent_numeric(full):
 
 
 def determine_uniques(full):
-    """Pass a dict of the full profile data.
+    """Calculates the percent of unique values within the fields, updates the profile data.
+
+    Pass a dict of the full profile data.
     Mutates the profile dict to have the all_unique_Q value.
     This calculates if all values seens for a field appear one and only one time, and thus it is a
     unique field."""
@@ -183,13 +201,19 @@ def determine_uniques(full):
 
 
 def count_values(full):
-    # Pass it a dict of the full profile data. Counts the number of times each unique value seen for that field appears.
+    """Counts the number of unique values seen within that field, updates the profile data.
+
+    Pass it a dict of the full profile data. Counts the number of times each unique value seen for that field appears.
+
+    """
     for key, value in full.items():
         full[key]['values'] = Counter(full[key]['values'])
 
 def write_html_profile(full, filename):
-    """pass a dict of the full profile data and file name,
-     loads as a pandas data frame, and writes it to and HTML file"""
+    """Writes out the HTML version of the data profile.
+
+    pass a dict of the full profile data and file name,
+    loads as a pandas data frame, and writes it to and HTML file"""
     df = pd.read_json(json.dumps(full))
     df = df.T
     html = df.to_html()
@@ -197,7 +221,9 @@ def write_html_profile(full, filename):
         out.write(html)
 
 def write_excel_values(full, filename):
-    """pass a dict of the full profile data and file name,
+    """Writes out the Excel formatted version of the data profile.
+
+    pass a dict of the full profile data and file name,
     loads it as a data frame, loops over the values seen in the fields,
     writes out the values and their counts as separate excel sheets."""
     df = pd.read_json(json.dumps(full))

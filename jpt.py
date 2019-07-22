@@ -24,7 +24,7 @@ def submit(strvar, unique_cb, numeric_cb, html_cb, excel_cb, customname_entry):
 
 
 def browsefunc(folder_input):
-    """button behavior driving the file browsing button.
+    """Button behavior driving the file browsing button.
     Gathers the file path from the browse dialog box, and loads the meta dict with info on the file"""
 
     # get the file info
