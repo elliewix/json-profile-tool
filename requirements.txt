@@ -256,7 +256,7 @@ tweepy==3.6.0
 ujson==1.35
 unicodecsv==0.14.1
 update-checker==0.16
-urllib3==1.22
+urllib3==1.26.5
 uszipcode==0.2.2
 voc==0.1.5
 Wand==0.4.4
