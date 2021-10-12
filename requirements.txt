@@ -142,7 +142,7 @@ numpydoc==0.6.0
 oauthlib==2.1.0
 odo==0.5.0
 olefile==0.44
-opencv-python==3.4.3.18
+opencv-python==4.2.0.32
 openpyxl==2.4.7
 packaging==16.8
 pandas==0.20.1
