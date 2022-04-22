@@ -191,7 +191,7 @@ pyOpenSSL==17.0.0
 pyosf==1.0.5
 pyparallel==0.2.2
 pyparsing==2.1.4
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 Pypubsub==4.0.0
 PyQt5==5.11.3
 PyQt5-sip==4.19.13
