@@ -163,7 +163,7 @@ poyo==0.4.1
 praw==3.6.1
 preshed==2.0.1
 prompt-toolkit==2.0.7
-protobuf==3.6.0
+protobuf==3.18.3
 psutil==5.2.2
 PsychoPy==1.90.3
 ptyprocess==0.5.1
